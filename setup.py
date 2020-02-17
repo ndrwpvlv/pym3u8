@@ -14,14 +14,15 @@ setup(
     author='Andrei S. Pavlov',
     author_email='ndrw.pvlv@gmail.com',
     description='Simple Python 3 lib for downloading online HLS streams and videos',
-    download_url='https://github.com/ndrwpvlv/pym3u8/archive/0.1.3.tar.gz',
+    download_url='https://github.com/ndrwpvlv/pym3u8/archive/0.1.4.tar.gz',
     long_description=long_description,
     long_description_content_type='text/markdown',
     keywords=['M3U8', 'HLS', 'STREAM', 'VIDEO', ],
 
     classifiers=[
-        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
     ],
