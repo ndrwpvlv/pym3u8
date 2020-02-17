@@ -10,7 +10,7 @@ import requests
 class Loader:
 
     def __init__(self, url: str, referer: str, filename: str = 'file', extension: str = 'ts',
-                 user_agent: str = 'WebHTML5Player/1.0.0', proxy: str = None, ssl_verify=False, m3u8_ext: str = 'm3u8',
+                 user_agent: str = 'WebHTML5Player/1.0.0', proxy: str = None, ssl_verify=True, m3u8_ext: str = 'm3u8',
                  max_retries: int = 5):
         kwargs = dict(locals())
         self.url = kwargs['url']
