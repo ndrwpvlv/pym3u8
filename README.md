@@ -1,7 +1,10 @@
 # pym3u8
 
-**pym3u8** is simple Python 3 lib for downloading online HLS streams and videos.
-For example you can use it to download HLS streams and videos. 
+**pym3u8** is simple Python 3 lib for downloading online HLS streams and videos. 
+
+You need only link to m3u8 file with list of ts-files.
+
+pym3u8 working with direct connections and socks proxies.
 
 
 ## Basic usage
