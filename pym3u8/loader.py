@@ -72,7 +72,7 @@ class Loader:
         working_dir = os.getcwd()
         for file in files_list:
             file_path = os.path.join(working_dir, file)
-            if os.path.isfile(file_path):  # this makes the code more robust
+            if os.path.isfile(file_path):
                 os.remove(file_path)
         print('Cleanup is finished')
 
