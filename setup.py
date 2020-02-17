@@ -10,13 +10,14 @@ with open('requirements.txt') as fr:
 
 setup(
     name='pym3u8',
-    version='0.1.1',
+    version='0.1.2',
     packages=['pym3u8', ],
     url='https://github.com/ndrwpvlv/pym3u8',
     license='MIT',
     author='Andrei S. Pavlov',
     author_email='ndrw.pvlv@gmail.com',
     description='Simple Python 3 lib for downloading online HLS streams and videos',
+    download_url='https://github.com/ndrwpvlv/pym3u8/archive/0.1.2.tar.gz',
     long_description=long_description,
     long_description_content_type='text/markdown',
     keywords=['M3U8', 'HLS', 'STREAM', 'VIDEO', ],
