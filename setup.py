@@ -5,9 +5,6 @@ from setuptools import setup
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 
-with open('requirements.txt') as fr:
-    required = fr.read().splitlines()
-
 setup(
     name='pym3u8',
     version='0.1.2',
@@ -28,5 +25,6 @@ setup(
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
     ],
-    install_requires=required,
+    install_requires=['certifi==2019.11.28', 'chardet==3.0.4', 'idna==2.8', 'PySocks==1.7.1', 'requests==2.22.0',
+                      'socks==0', 'urllib3==1.25.8'],
 )
