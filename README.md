@@ -7,7 +7,12 @@ You need only link to m3u8 file with list of ts-files.
 pym3u8 working with direct connections and socks proxies.
 
 ## Installation
-Download source or clone repository and execute:
+Install with pip:
+```
+pip install pym3u8
+```
+
+Or download source or clone repository and execute:
 ```
 pip3 install git+https://github.com/ndrwpvlv/pym3u8.git
 ```
