@@ -7,7 +7,7 @@ with open('README.md', 'r') as fh:
 
 setup(
     name='pym3u8',
-    version='0.1.3',
+    version='0.1.4',
     packages=['pym3u8', ],
     url='https://github.com/ndrwpvlv/pym3u8',
     license='MIT',
