@@ -10,7 +10,8 @@ import requests
 class Loader:
 
     def __init__(self, url: str, referer: str, filename: str = 'file', extension: str = 'ts',
-                 user_agent: str = 'WebHTML5Player/1.0.0', proxy: str = None, ssl_verify=False, m3u8_ext: str = 'm3u8'):
+                 user_agent: str = 'WebHTML5Player/1.0.0', proxy: str = None, ssl_verify=False, m3u8_ext: str = 'm3u8',
+                 max_retries: int = 5):
         kwargs = dict(locals())
         self.url = kwargs['url']
         self.referer = kwargs['referer']
@@ -25,21 +26,26 @@ class Loader:
         else:
             self.proxies = None
         self.playlist = None
+        self.session = requests.Session()
+        self.session_adapter = requests.adapters.HTTPAdapter(max_retries=max_retries)
+        self.session.mount('http://', self.session_adapter)
+        self.session.mount('https://', self.session_adapter)
 
     def get_playlist(self):
-        response = requests.get(self.url, verify=self.ssl_verify, headers={
+        response = self.session.get(self.url, verify=self.ssl_verify, headers={
             'Referer': self.referer,
             'Origin': self.origin,
             'User-Agent': self.user_agent, }, proxies=self.proxies)
-        return [line for line in response.text.split('\n') if line and '#' not in line]
+        return [line if line[0:2] != './' else line[2:] for line in response.text.split('\n') if
+                line and '#' not in line]
 
     def get_files(self):
         files_list = []
         for idx, item in enumerate(self.playlist):
             url_parse = urlparse(self.url)
             url = '%s://%s%s/%s' % (
-            url_parse[0], url_parse[1], re.sub('/[a-zA-Z0-9~_\-]+.%s' % self.m3u8_ext, '', url_parse[2]), item)
-            response = requests.get(url, stream=True, headers={
+                url_parse[0], url_parse[1], re.sub('/[a-zA-Z0-9~_\-]+.%s' % self.m3u8_ext, '', url_parse[2]), item)
+            response = self.session.get(url, stream=True, headers={
                 'Referer': self.referer,
                 'Origin': self.origin,
                 'User-Agent': self.user_agent,
@@ -78,6 +84,7 @@ class Loader:
 
     def download(self):
         self.playlist = self.get_playlist()
+        print(self.playlist)
         _ = self.get_files()
         self.join_files(_)
         self.cleanup(_)
