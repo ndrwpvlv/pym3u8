@@ -9,8 +9,8 @@ import requests
 
 class Loader:
 
-    def __init__(self, url: str, referer: str, filename: str = 'tmp', extension: str = 'ts',
-                 user_agent: str = 'WebHTML5Player/1.0.0', proxy: str = None, ssl_verify=True, m3u8_ext: str = 'm3u8'):
+    def __init__(self, url: str, referer: str, filename: str = 'file', extension: str = 'ts',
+                 user_agent: str = 'WebHTML5Player/1.0.0', proxy: str = None, ssl_verify=False, m3u8_ext: str = 'm3u8'):
         kwargs = dict(locals())
         self.url = kwargs['url']
         self.referer = kwargs['referer']
@@ -51,7 +51,7 @@ class Loader:
                 files_list.append(filename)
                 with open(filename, 'wb') as file:
                     file.write(response.content)
-                print('Written file %i of %i files' % (idx + 1, len(self.playlist)))
+                print('Saved part %i of %i' % (idx + 1, len(self.playlist)))
             else:
                 print(url)
                 print(response.text)
@@ -65,7 +65,7 @@ class Loader:
             for file in files_list:
                 with open(os.path.join(working_dir, file), "rb") as part:
                     shutil.copyfileobj(part, output)
-        print('Files is merged')
+        print('Files are merged')
 
     @staticmethod
     def cleanup(files_list):
