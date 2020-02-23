@@ -7,14 +7,14 @@ with open('README.md', 'r') as fh:
 
 setup(
     name='pym3u8',
-    version='0.1.4',
+    version='0.1.5',
     packages=['pym3u8', ],
     url='https://github.com/ndrwpvlv/pym3u8',
     license='MIT',
     author='Andrei S. Pavlov',
     author_email='ndrw.pvlv@gmail.com',
     description='Simple Python 3 lib for downloading online HLS streams and videos',
-    download_url='https://github.com/ndrwpvlv/pym3u8/archive/0.1.4.tar.gz',
+    download_url='https://github.com/ndrwpvlv/pym3u8/archive/0.1.5.tar.gz',
     long_description=long_description,
     long_description_content_type='text/markdown',
     keywords=['M3U8', 'HLS', 'STREAM', 'VIDEO', ],
@@ -26,6 +26,6 @@ setup(
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
     ],
-    install_requires=['certifi==2019.11.28', 'chardet==3.0.4', 'idna==2.9', 'PySocks==1.7.1', 'requests==2.22.0',
+    install_requires=['certifi==2019.11.28', 'chardet==3.0.4', 'idna==2.9', 'PySocks==1.7.1', 'requests==2.23.0',
                       'socks==0', 'urllib3==1.25.8'],
 )
