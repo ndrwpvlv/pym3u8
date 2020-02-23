@@ -1,10 +1,10 @@
-import os
 import re
-import shutil
 import sys
 from urllib.parse import urlparse
 
 import requests
+
+from .helpers import ProgressBar
 
 
 class Loader:
@@ -30,6 +30,8 @@ class Loader:
         self.session_adapter = requests.adapters.HTTPAdapter(max_retries=max_retries)
         self.session.mount('http://', self.session_adapter)
         self.session.mount('https://', self.session_adapter)
+        self.chunk_size = 8192
+        self.progress_bar = ProgressBar().filters['percents']
 
     def get_playlist(self):
         response = self.session.get(self.url, verify=self.ssl_verify, headers={
@@ -40,51 +42,30 @@ class Loader:
                 line and '#' not in line]
 
     def get_files(self):
-        files_list = []
-        for idx, item in enumerate(self.playlist):
-            url_parse = urlparse(self.url)
-            url = '%s://%s%s/%s' % (
-                url_parse[0], url_parse[1], re.sub('/[a-zA-Z0-9~_\-]+.%s' % self.m3u8_ext, '', url_parse[2]), item)
-            response = self.session.get(url, stream=True, headers={
-                'Referer': self.referer,
-                'Origin': self.origin,
-                'User-Agent': self.user_agent,
-                'Host': url_parse[1],
-                'Connection': 'keep-alive',
-            }, proxies=self.proxies)
-            if response.status_code == 200:
-                filename = '%s_%i.%s' % (self.filename, idx, self.extension)
-                files_list.append(filename)
-                with open(filename, 'wb') as file:
-                    file.write(response.content)
-                print('Saved part %i of %i' % (idx + 1, len(self.playlist)))
-            else:
-                print(url)
-                print(response.text)
-                sys.exit()
-        return files_list
-
-    def join_files(self, files_list: list):
-        working_dir = os.getcwd()
         filename = '%s.%s' % (self.filename, self.extension)
-        with open(filename, "wb") as output:
-            for file in files_list:
-                with open(os.path.join(working_dir, file), "rb") as part:
-                    shutil.copyfileobj(part, output)
-        print('Files are merged')
-
-    @staticmethod
-    def cleanup(files_list):
-        working_dir = os.getcwd()
-        for file in files_list:
-            file_path = os.path.join(working_dir, file)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-        print('Cleanup is finished')
+        with open(filename, 'wb', buffering=self.chunk_size) as file:
+            for idx, item in enumerate(self.playlist):
+                url_parse = urlparse(self.url)
+                url = '%s://%s%s/%s' % (
+                    url_parse[0], url_parse[1], re.sub('/[a-zA-Z0-9~_\-]+.%s' % self.m3u8_ext, '', url_parse[2]), item)
+                with self.session.get(url, stream=True, headers={
+                    'Referer': self.referer,
+                    'Origin': self.origin,
+                    'User-Agent': self.user_agent,
+                    'Host': url_parse[1],
+                    'Connection': 'keep-alive',
+                }, proxies=self.proxies) as response:
+                    if response.status_code == 200:
+                        for chunk in response.iter_content(chunk_size=self.chunk_size):
+                            file.write(chunk) if chunk else None
+                        print(self.progress_bar(idx, len(self.playlist)), end='\r', flush=True)
+                    else:
+                        print(url)
+                        print(response.text)
+                        sys.exit()
+        print('\nFinished')
+        return True
 
     def download(self):
         self.playlist = self.get_playlist()
-        print(self.playlist)
-        _ = self.get_files()
-        self.join_files(_)
-        self.cleanup(_)
+        self.get_files()
