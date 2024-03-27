@@ -26,6 +26,6 @@ setup(
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
     ],
-    install_requires=['certifi==2022.12.7', 'chardet==3.0.4', 'idna==2.9', 'PySocks==1.7.1', 'requests==2.23.0',
+    install_requires=['certifi==2022.12.7', 'chardet==3.0.4', 'idna==2.9', 'PySocks==1.7.1', 'requests==2.31.0',
                       'socks==0', 'urllib3==1.26.5'],
 )
